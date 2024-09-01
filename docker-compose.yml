@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  react_query_builder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9000:3000"
+    command: npm start
+    working_dir: /app/query_builder
+    volumes:
+      - .:/app
+    environment:
+      - CHOKIDAR_USEPOLLING=true

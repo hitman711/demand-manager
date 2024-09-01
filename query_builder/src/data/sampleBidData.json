@@ -1,0 +1,62 @@
+[
+    {
+        "id": 1,
+        "network": 1,
+        "DealID": 1,
+        "SeatID": 1,
+        "Bidder": "Bidder 1",
+        "Advertiser": "Advertiser 1",
+        "CampaignID": 1,
+        "BidScore": 10
+    },
+    {
+        "id": 2,
+        "network": 1,
+        "DealID": 2,
+        "SeatID": 2,
+        "Bidder": "Bidder 2",
+        "Advertiser": "Advertiser 2",
+        "CampaignID": 2,
+        "BidScore": 10
+    },
+    {
+        "id": 3,
+        "network": 2,
+        "DealID": 1,
+        "SeatID": 1,
+        "Bidder": "Bidder 1",
+        "Advertiser": "Advertiser 1",
+        "CampaignID": 1,
+        "BidScore": 10
+    },
+    {
+        "id": 4,
+        "network": 2,
+        "DealID": 2,
+        "SeatID": 2,
+        "Bidder": "Bidder 2",
+        "Advertiser": "Advertiser 2",
+        "CampaignID": 2,
+        "BidScore": 10
+    },
+    {
+        "id": 5,
+        "network": 3,
+        "DealID": 1,
+        "SeatID": 2,
+        "Bidder": "Bidder 1",
+        "Advertiser": "Advertiser 1",
+        "CampaignID": 1,
+        "BidScore": 10
+    },
+    {
+        "id": 6,
+        "network": 3,
+        "DealID": 2,
+        "SeatID": 1,
+        "Bidder": "Bidder 2",
+        "Advertiser": "Advertiser 2",
+        "CampaignID": 2,
+        "BidScore": 10
+    }
+]
