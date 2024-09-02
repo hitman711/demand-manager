@@ -7,3 +7,5 @@ RUN apt-get update -y
 WORKDIR /app/query_builder
 
 RUN npm install -g
+
+CMD ["npm", "start"]
