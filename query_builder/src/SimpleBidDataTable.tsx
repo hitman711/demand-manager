@@ -20,7 +20,7 @@ const SimpleDataTable: React.FC<BidDataTableProps> = (
 ) => {
 
     return (
-        <Container maxWidth="false">
+        <Container maxWidth={false}>
             <h1>Bid Data</h1>
             <Box mb={2}>
                 <Button variant="contained" color="primary" onClick={onEvaluateClick}>

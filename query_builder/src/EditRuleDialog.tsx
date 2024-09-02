@@ -1,12 +1,11 @@
 // EditRuleDialog.tsx
-import React, { useState, ChangeEvent, useEffect } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { QueryBuilder, RuleGroupType, formatQuery } from 'react-querybuilder';
 import { parseCEL } from "react-querybuilder/parseCEL";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Select, MenuItem, FormControl, InputLabel, capitalize, FormLabel, FormControlLabel, SelectChangeEvent } from '@mui/material';
 import Switch from '@mui/material/Switch';
 import { Rule as RuleType } from './types';
-import { INCREASE, DECREASE, FIXED, ACTIVE, INACTIVE } from './constant';
-import { stat } from 'fs';
+import { INCREASE, DECREASE, FIXED, ACTIVE } from './constant';
 
 interface EditRuleDialogProps {
   open: boolean;
@@ -86,7 +85,7 @@ const EditRuleDialog: React.FC<EditRuleDialogProps> = ({ open, queryFields, oper
   };
 
   // Custom Operator Selector to display the operator label
-  const customOperatorSelector = (props) => {
+  const customOperatorSelector = (props: any) => {
     return (
       <FormControl margin="normal" style={{ padding: '0px 2px'}}>
         <Select
@@ -106,7 +105,7 @@ const EditRuleDialog: React.FC<EditRuleDialogProps> = ({ open, queryFields, oper
   };
 
   // Custom Value Editor to display a text field for entering values
-  const customValueEditor = (props) => {
+  const customValueEditor = (props: any) => {
     return (
       <FormControl margin="normal">
         <TextField
@@ -141,12 +140,12 @@ const EditRuleDialog: React.FC<EditRuleDialogProps> = ({ open, queryFields, oper
 
   const handleSave = () => {
     const rule: RuleType = {
-      id: initialRule?.id, // Use current timestamp for new rules
+      id: initialRule?.id || Date.now(), // Use current timestamp for new rules
       name,
       network: Number(network),
       bidScore,
       bidScoreType,
-      status,
+      status, 
       condition: condition ? formatQuery(
         filterEmptyValues(condition), {
         format: 'cel',

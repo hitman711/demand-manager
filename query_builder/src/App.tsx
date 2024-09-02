@@ -4,13 +4,13 @@ import SimpleDataTable from './SimpleDataTable';
 import BidDataTable from './SimpleBidDataTable';
 import { Rule, Bid } from './types';
 import { INCREASE, DECREASE, FIXED } from './constant';
-import { ACTIVE, INACTIVE } from './constant';
+import { ACTIVE } from './constant';
 import sampleBidData from './data/sampleBidData.json';
 import { 
   Button
 } from '@mui/material';
 
-import { formatQuery, type Field, type RuleGroupType } from 'react-querybuilder';
+import { Field, RuleGroupType } from 'react-querybuilder';
 import EditRuleDialog from './EditRuleDialog';
 import { Parser } from 'expr-eval';
 
@@ -245,40 +245,3 @@ const App = () => {
 }
 
 export default App;
-
-
-/*
-  // Custom control elements to disable adding rules and groups
-  const customControlElements = {
-    addRuleAction: () => <span></span>,   // Hide the "Add Rule" button
-    addGroupAction: () => <span></span>,  // Hide the "Add Group" button
-    removeRuleAction: () => <span></span>, // Hide the "Remove Rule" button
-  };
-
-  // Function to filter out empty values
-  const filterEmptyValues = (query: RuleGroupType): RuleGroupType => {
-    return {
-      ...query,
-      rules: query.rules
-        .map(rule => {
-          // Check if the rule is a nested group or a simple rule
-          if ('rules' in rule) {
-            // Recursively filter nested groups
-            return filterEmptyValues(rule as RuleGroupType);
-          }
-          // Omit the rule if its value is empty or undefined
-          return rule.value ? rule : null;
-        })
-        .filter(rule => rule !== null), // Filter out null values
-    };
-  };
-
-          <QueryBuilder
-            fields={fields}
-            operators={operators}
-            query={query}
-            onQueryChange={handleQueryChange}
-            controlElements={customControlElements}
-          />
-
-*/
