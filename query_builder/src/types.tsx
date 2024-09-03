@@ -1,8 +1,8 @@
 // Define the type for a single row of data
 export interface Rule {
-    id: number;
+    id: string;
     name: string;
-    network: number;
+    network: string;
     condition: string;
     bidScore: number;
     bidScoreType: string;
@@ -10,14 +10,16 @@ export interface Rule {
 }
 
 export interface Bid {
-    id: number;
-    network: number;
-    DealID: number;
-    SeatID: number;
-    Bidder: string;
-    Advertiser: string;
-    CampaignID: number;
-    BidScore: number;
+    id: string;
+    network: string;
+    networkName: string;
+    dealId?: string;
+    seatId: string;
+    bidder: string;
+    bidBuyer: string;
+    advertiser: string;
+    campaignId: string;
+    bidScore: number;
     match?: string;
     newScore?: number;
     ruleIDs?: number[];

@@ -1,5 +1,4 @@
-export const INCREASE = 'increase';
-export const DECREASE = 'decrease';
+export const PERCENT = 'percent';
 export const FIXED = 'fixed';
 
 export const ACTIVE = true;

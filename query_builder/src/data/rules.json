@@ -1,8 +1,8 @@
 [
-    { "id": 1, "name": "Rule 1 (DealID)", "network": 1, "condition": "DealID == 1", bidScore: 50, bidScoreType: INCREASE, status: ACTIVE },
-    { id: 2, name: "Rule 2 (SeatID)", network: 1, condition: "SeatID == 2", bidScore: 50, bidScoreType: DECREASE, status: ACTIVE },
-    { id: 3, name: "Rule 3 (DealID)", network: 1, condition: "DealID == 1", bidScore: 10, bidScoreType: FIXED, status: ACTIVE },
-    { id: 4, name: "Rule 4 (SeatID)", network: 1, condition: "SeatID == 1", bidScore: 40, bidScoreType: FIXED, status: ACTIVE },
-    { id: 5, name: "Rule 5 (DealID & SeatID)", network: 1, condition: "DealID == 1 && SeatID == 1", bidScore: 100, bidScoreType: FIXED, status: ACTIVE },
-    { id: 6, name: "Rule 6 (DealID & SeatID)", network: 3, condition: "DealID == 2 && SeatID == 1 && CampaignID == 2", bidScore: 110, bidScoreType: FIXED, status: ACTIVE },
+    { "id": 1, "name": "Rule 1 (dealId)", "network": 1, "condition": "dealId == 1", bidScore: 50, bidScoreType: INCREASE, status: ACTIVE },
+    { id: 2, name: "Rule 2 (seatId)", network: 1, condition: "seatId == 2", bidScore: 50, bidScoreType: DECREASE, status: ACTIVE },
+    { id: 3, name: "Rule 3 (dealId)", network: 1, condition: "dealId == 1", bidScore: 10, bidScoreType: FIXED, status: ACTIVE },
+    { id: 4, name: "Rule 4 (seatId)", network: 1, condition: "seatId == 1", bidScore: 40, bidScoreType: FIXED, status: ACTIVE },
+    { id: 5, name: "Rule 5 (dealId & seatId)", network: 1, condition: "dealId == 1 && seatId == 1", bidScore: 100, bidScoreType: FIXED, status: ACTIVE },
+    { id: 6, name: "Rule 6 (dealId & seatId)", network: 3, condition: "dealId == 2 && seatId == 1 && CampaignID == 2", bidScore: 110, bidScoreType: FIXED, status: ACTIVE },
   ]

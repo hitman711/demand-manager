@@ -3,7 +3,7 @@ import './App.css';
 import SimpleDataTable from './SimpleDataTable';
 import BidDataTable from './SimpleBidDataTable';
 import { Rule, Bid } from './types';
-import { INCREASE, DECREASE, FIXED } from './constant';
+import { PERCENT, FIXED } from './constant';
 import { ACTIVE } from './constant';
 import sampleBidData from './data/sampleBidData.json';
 import { 
@@ -16,23 +16,18 @@ import { Parser } from 'expr-eval';
 
 // Sample data for the table
 const initialRules: Rule[] = [
-  { id: 1, name: 'Rule 1 (DealID)', network: 1, condition: 'DealID == 1', bidScore: 50, bidScoreType: INCREASE, status: ACTIVE },
-  { id: 2, name: 'Rule 2 (SeatID)', network: 1, condition: 'SeatID == 2', bidScore: 50, bidScoreType: DECREASE, status: ACTIVE },
-  { id: 3, name: 'Rule 3 (DealID)', network: 1, condition: 'DealID == 1', bidScore: 10, bidScoreType: FIXED, status: ACTIVE },
-  { id: 4, name: 'Rule 4 (SeatID)', network: 1, condition: 'SeatID == 1', bidScore: 40, bidScoreType: FIXED, status: ACTIVE },
-  { id: 5, name: 'Rule 5 (DealID & SeatID)', network: 1, condition: 'DealID == 1 && SeatID == 1', bidScore: 100, bidScoreType: FIXED, status: ACTIVE },
-  { id: 6, name: 'Rule 6 (DealID & SeatID)', network: 3, condition: 'DealID == 2 && SeatID == 1 && CampaignID == 2', bidScore: 110, bidScoreType: FIXED, status: ACTIVE },
+  { id: 1, name: 'Rule 1 (dealId)', network: "tVDpnddOTCKyK36BMu2eNw", condition: 'campaignId == "UGijo8iJSWKjTxiN9xZW3A"', bidScore: 50, bidScoreType: PERCENT, status: ACTIVE },
 ];
 
 const bidColumns = [
-  { field: 'id', headerName: 'ID', flex: 1 },
-  { field: 'network', headerName: 'Network', flex: 1 },
-  { field: 'DealID', headerName: 'Deal ID', flex: 1 },
-  { field: 'SeatID', headerName: 'Seat ID', flex: 1 },
-  { field: 'Bidder', headerName: 'Bidder', flex: 1 },
-  { field: 'Advertiser', headerName: 'Advertiser', flex: 1 },
-  { field: 'CampaignID', headerName: 'Campaign ID', flex: 1 },
-  { field: 'BidScore', headerName: 'Bid Score', flex: 1 },
+  { field: 'id', headerName: 'Auction ID', flex: 1 },
+  { field: 'network', headerName: 'Network Name', flex: 1 },
+  { field: 'bidder', headerName: 'Bidder Name', flex: 1 },
+  { field: 'dealId', headerName: 'Deal ID', flex: 1 },
+  { field: 'bidBuyer', headerName: 'Bid Buyer', flex: 1 },
+  { field: 'advertiser', headerName: 'advertiser Name', flex: 1 },
+  { field: 'campaignId', headerName: 'Campaign Id', flex: 1 },
+  { field: 'bidScore', headerName: 'Avg Bid CPM', flex: 1 },
   { field: 'match', headerName: 'Match', flex: 1, renderCell: (param) => {
     return (
       <div style={{ color: param.value === 'No' ? 'red' : 'green' }}>
@@ -46,11 +41,12 @@ const bidColumns = [
 
 // React query bparseruilder query field
 const queryFields: Field[] = [
-  { name: 'DealID', label: 'Deal ID' },
-  { name: 'SeatID', label: 'Seat ID' },
-  { name: 'Bidder', label: 'Bidder' },
-  { name: 'Advertiser', label: 'Advertiser' },
-  { name: 'CampaignID', label: 'Campaign ID' },
+  { name: 'bidder', label: 'Bidder' },
+  { name: 'dealId', label: 'Deal ID' },
+  { name: 'seatId', label: 'Seat ID' },
+  { name: 'bidBuyer', label: 'Bid Buyer' },
+  { name: 'advertiser', label: 'Advertiser Name' },
+  { name: 'campaignId', label: 'Campaign ID' },
 ];
 
 const operators = [
@@ -69,17 +65,17 @@ const defaultQueryRule: RuleGroupType = {
   combinator: 'and', 
   rules: [
     {
-      field: 'DealID',
+      field: 'dealId',
       operator: '=',
       value: ''
     },
     {
-      field: 'SeatID',
+      field: 'seatId',
       operator: '=',
       value: ''
     },
     {
-      field: 'CampaignID',
+      field: 'campaignId',
       operator: '=',
       value: ''
     }
@@ -94,7 +90,21 @@ const App = () => {
   const [selectedRule, setSelectedRule] = useState<Rule | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [bidData, setBidData] = useState<Bid[]>(sampleBidData);
+
+  const [bidData, setBidData] = useState<Bid[]>(sampleBidData.map(
+    item => ({
+      id: item['Auction ID'],
+      network: item['Network Id'],
+      networkName: item['Network Name'],
+      dealId: item['Deal ID'],
+      bidder: item['Bidder Name'],
+      bidBuyer: item['Bid Buyer'],
+      advertiser: item['Advertiser Name'],
+      campaignId: item['Campaign Id'],
+      seatId: item['Seat ID'],
+      bidScore: item['Average Bid CPM'],
+    })
+  ));
 
   const handleEditClick = (rule: Rule) => {
     setSelectedRule(rule);
@@ -166,7 +176,7 @@ const App = () => {
 
   const evaludateRule = (rules: Rule[], bid: Bid) => {
     bid.match = 'No';
-    bid.newScore = bid.BidScore || 0;
+    bid.newScore = bid.bidScore || 0;
     bid.ruleIDs = [];
     for(let i = 0; i < rules.length; i++) {
       let rule = rules[i]; 
@@ -180,13 +190,8 @@ const App = () => {
           bid.newScore = rule.bidScore;
           break;
         }else {
-          if (rule.bidScoreType === 'increase') {
-            bid.ruleIDs.push(rule.id);
-            bid.newScore *= (1 + (rule.bidScore/100));
-          }else if (rule.bidScoreType === 'decrease') {
-            bid.ruleIDs.push(rule.id);
-            bid.newScore *= (1 - (rule.bidScore/100));
-          }            
+          bid.ruleIDs.push(rule.id);
+          bid.newScore *= (1 + (rule.bidScore/100));
         }
       }      
     }
@@ -235,6 +240,7 @@ const App = () => {
           defaultQueryRule={defaultQueryRule}
           operators={operators}
           customControlElements={customControlElements}
+          bidData={bidData}
           isEditMode={isEditMode}
           onClose={handleCloseDialog}
           onSave={handleSaveDialog}

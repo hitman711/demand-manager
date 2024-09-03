@@ -5,7 +5,7 @@ import { parseCEL } from "react-querybuilder/parseCEL";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Select, MenuItem, FormControl, InputLabel, capitalize, FormLabel, FormControlLabel, SelectChangeEvent } from '@mui/material';
 import Switch from '@mui/material/Switch';
 import { Rule as RuleType } from './types';
-import { INCREASE, DECREASE, FIXED, ACTIVE } from './constant';
+import { PERCENT, FIXED, ACTIVE } from './constant';
 
 interface EditRuleDialogProps {
   open: boolean;
@@ -18,7 +18,7 @@ interface EditRuleDialogProps {
   onSave: (rule: RuleType) => void;
 }
 
-const EditRuleDialog: React.FC<EditRuleDialogProps> = ({ open, queryFields, operators, initialRule, defaultQueryRule, isEditMode, customControlElements,  onClose, onSave }) => {
+const EditRuleDialog: React.FC<EditRuleDialogProps> = ({ open, queryFields, operators, initialRule, defaultQueryRule, isEditMode, customControlElements, bidData,  onClose, onSave }) => {
   const [name, setName] = useState(initialRule?.name || '');
   const [network, setNetwork] = useState(initialRule?.network || '');
   const [bidScore, setBidScore] = useState(initialRule?.bidScore || 0);
@@ -142,7 +142,7 @@ const EditRuleDialog: React.FC<EditRuleDialogProps> = ({ open, queryFields, oper
     const rule: RuleType = {
       id: initialRule?.id || Date.now(), // Use current timestamp for new rules
       name,
-      network: Number(network),
+      network,
       bidScore,
       bidScoreType,
       status, 
@@ -153,9 +153,20 @@ const EditRuleDialog: React.FC<EditRuleDialogProps> = ({ open, queryFields, oper
         // exclude empty values
       }) : ''
     };
+    console.log(rule);
     onSave(rule);
     onClose();
   };
+
+  // Remove duplicates based on the 'name' field
+  const uniqueOptions = bidData.reduce((acc, current) => {
+    const x = acc.find(item => item.name === current.name);
+    if (!x) {
+      return acc.concat([current]);
+    } else {
+      return acc;
+    }
+  }, []);
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -168,14 +179,18 @@ const EditRuleDialog: React.FC<EditRuleDialogProps> = ({ open, queryFields, oper
           onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
           margin="normal"
         />
-        <TextField
-          label="Network ID"
-          fullWidth
-          value={network}
-          type="number"
-          onChange={(e: ChangeEvent<HTMLInputElement>) => setNetwork(e.target.value)}
-          margin="normal"
-        />
+        <FormControl fullWidth margin="normal">
+          <InputLabel>Network</InputLabel>
+          <Select
+            value={network}
+            onChange={(e: SelectChangeEvent) => setNetwork(e.target.value)}
+            margin='normal'
+          >
+            {uniqueOptions.map((network) => (
+              <MenuItem value={network.network}>{network.networkName}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         <TextField
           label="Bid Score"
           type="number"
@@ -190,8 +205,7 @@ const EditRuleDialog: React.FC<EditRuleDialogProps> = ({ open, queryFields, oper
             value={bidScoreType}
             onChange={(e: SelectChangeEvent) => setBidScoreType(e.target.value)}
           >
-            <MenuItem value={INCREASE}>{INCREASE}</MenuItem>
-            <MenuItem value={DECREASE}>{DECREASE}</MenuItem>
+            <MenuItem value={PERCENT}>{PERCENT}</MenuItem>
             <MenuItem value={FIXED}>{FIXED}</MenuItem>
           </Select>
         </FormControl>

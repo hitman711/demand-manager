@@ -3,7 +3,7 @@ import { Button, Container, Box } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Add } from '@mui/icons-material';
 import { Rule } from './types';
-import { INCREASE } from './constant';
+import { PERCENT } from './constant';
 
 
 const defaultRule = {
@@ -12,7 +12,7 @@ const defaultRule = {
   network: 1,
   condition: '',
   bidScore: 0,
-  bidScoreType: INCREASE,
+  bidScoreType: PERCENT,
   status: true,
 };
 
